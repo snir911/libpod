@@ -1043,8 +1043,8 @@ func (c *Container) cleanupRuntime(ctx context.Context) error {
 	defer span.Finish()
 
 	// If the container is not ContainerStateStopped or
-	// ContainerStateCreated, do nothing.
-	if !c.ensureState(define.ContainerStateStopped, define.ContainerStateCreated) {
+	// ContainerStateCreated or ContainerStateRemoving, do nothing.
+	if !c.ensureState(define.ContainerStateStopped, define.ContainerStateCreated, define.ContainerStateRemoving) {
 		return nil
 	}
 

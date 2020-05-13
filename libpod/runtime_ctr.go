@@ -489,7 +489,9 @@ func (r *Runtime) removeContainer(ctx context.Context, c *Container, force bool,
 	}
 
 	// Set ContainerStateRemoving
-	c.state.State = define.ContainerStateRemoving
+	if c.ensureState(define.ContainerStateStopped, define.ContainerStateCreated) {
+		c.state.State = define.ContainerStateRemoving
+	}
 
 	if err := c.save(); err != nil {
 		return errors.Wrapf(err, "unable to set container %s removing state in database", c.ID())
